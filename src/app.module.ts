@@ -9,15 +9,15 @@ import { ResponseDetailsModule } from './response-details/response-details.modul
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver } from '@nestjs/apollo';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ormConfig } from './_common/config/orm.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({ useFactory: ormConfig }),
-    GraphQLModule.forRoot({
-      autoSchemaFile: true,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      autoSchemaFile: 'src/schema.gql',
       driver: ApolloDriver,
     }),
     SurveysModule,
