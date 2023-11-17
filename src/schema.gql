@@ -1,0 +1,75 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Response {
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  survey: Survey!
+  responseDetails: [ResponseDetail!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type ResponseDetail {
+  id: Int!
+  totalScore: Int!
+  response: Response!
+  question: Question!
+  answer: Answer!
+}
+
+type Answer {
+  id: Int!
+  AnswerText: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  question: Question!
+  responseDetails: [ResponseDetail!]!
+}
+
+type Question {
+  id: Int!
+  questionText: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  survey: Survey!
+  answers: [Answer!]!
+  responseDetails: [ResponseDetail!]!
+}
+
+type Survey {
+  id: Int!
+  title: String!
+  description: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  questions: [Question!]!
+  responses: [Response!]!
+}
+
+type Query {
+  getAllSurveys: [Survey!]!
+  getSurveyById(surveyId: Float!): Survey!
+}
+
+type Mutation {
+  createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
+  updateSurvey(updateSurveyInput: UpdateSurveyInput!): Survey!
+  deleteSurvey(surveyId: Float!): Boolean!
+}
+
+input CreateSurveyInput {
+  title: String!
+  description: String!
+}
+
+input UpdateSurveyInput {
+  id: Float!
+  title: String!
+  description: String!
+}
