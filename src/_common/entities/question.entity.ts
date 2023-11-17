@@ -21,7 +21,7 @@ export class Question {
 
   @Column()
   @Field()
-  questionText: string;
+  content: string;
 
   @CreateDateColumn()
   @Field(() => Date)
