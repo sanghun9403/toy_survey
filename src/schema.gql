@@ -26,6 +26,7 @@ type ResponseDetail {
 type Answer {
   id: Int!
   content: String!
+  score: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   question: Question!
@@ -35,6 +36,7 @@ type Answer {
 type Question {
   id: Int!
   content: String!
+  isMultipleChoice: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
   survey: Survey!
@@ -60,7 +62,7 @@ type Query {
 }
 
 type Mutation {
-  createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
+  createSurvey(input: CreateSurveyWith!): Survey!
   updateSurvey(updateSurveyInput: UpdateSurveyInput!): Survey!
   deleteSurvey(surveyId: Float!): Boolean!
   createQuestion(createQuestionInput: CreateQuestionInput!): Question!
@@ -71,9 +73,21 @@ type Mutation {
   deleteAnswer(answerId: Float!): Boolean!
 }
 
+input CreateSurveyWith {
+  createSurveyInput: CreateSurveyInput!
+  questionContents: [String!]!
+  answerContents: [[AnswerInput!]!]!
+  isMultipleChoice: Boolean
+}
+
 input CreateSurveyInput {
   title: String!
   description: String!
+}
+
+input AnswerInput {
+  content: String!
+  score: Float!
 }
 
 input UpdateSurveyInput {
@@ -85,16 +99,19 @@ input UpdateSurveyInput {
 input CreateQuestionInput {
   content: String!
   surveyId: Float!
+  isMultipleChoice: Boolean!
 }
 
 input UpdateQuestionInput {
   id: Float!
   content: String!
+  isMultipleChoice: Boolean!
 }
 
 input CreateAnswerInput {
   content: String!
   questionId: Float!
+  score: Float!
 }
 
 input UpdateAnswerInput {

@@ -2,7 +2,7 @@ import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { SurveysService } from './surveys.service';
 import { Survey } from 'src/_common/entities/survey.entity';
 import {
-  CreateSurveyInput,
+  CreateSurveyWith,
   UpdateSurveyInput,
 } from 'src/_common/dtos/survey.dto';
 
@@ -11,10 +11,13 @@ export class SurveysResolver {
   constructor(private readonly surveyService: SurveysService) {}
 
   @Mutation(() => Survey)
-  async createSurvey(
-    @Args('createSurveyInput') createSurveyInput: CreateSurveyInput,
-  ): Promise<Survey> {
-    return this.surveyService.createSurvey(createSurveyInput);
+  async createSurvey(@Args('input') input: CreateSurveyWith): Promise<Survey> {
+    return this.surveyService.createSurvey(
+      input.createSurveyInput,
+      input.questionContents,
+      input.answerContents,
+      input.isMultipleChoice,
+    );
   }
 
   @Query(() => [Survey])

@@ -22,6 +22,10 @@ export class Answer {
   @Field()
   content: string;
 
+  @Column({ type: 'int' })
+  @Field(() => Int)
+  score: number;
+
   @CreateDateColumn()
   @Field(() => Date)
   createdAt: Date;

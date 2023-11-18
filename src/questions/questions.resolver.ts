@@ -1,10 +1,11 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Question } from 'src/_common/entities/question.entity';
 import { QuestionsService } from './questions.service';
 import {
   CreateQuestionInput,
   UpdateQuestionInput,
 } from 'src/_common/dtos/quetion.dto';
+import { EntityManager } from 'typeorm';
 
 @Resolver(() => Question)
 export class QuestionsResolver {
@@ -13,8 +14,13 @@ export class QuestionsResolver {
   @Mutation(() => Question)
   async createQuestion(
     @Args('createQuestionInput') createQuestionInput: CreateQuestionInput,
+    @Context('transactionalEntityManager')
+    transactionalEntityManager: EntityManager,
   ): Promise<Question> {
-    return this.questionService.createQuestion(createQuestionInput);
+    return this.questionService.createQuestion(
+      transactionalEntityManager,
+      createQuestionInput,
+    );
   }
 
   @Query(() => [Question])

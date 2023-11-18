@@ -23,6 +23,10 @@ export class Question {
   @Field()
   content: string;
 
+  @Column({ default: false }) // 다중 선택 여부, 기본값은 단일 선택
+  @Field({ defaultValue: false })
+  isMultipleChoice: boolean;
+
   @CreateDateColumn()
   @Field(() => Date)
   createdAt: Date;
