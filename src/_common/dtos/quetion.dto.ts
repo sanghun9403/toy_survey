@@ -9,6 +9,9 @@ export class CreateQuestionInput {
 
   @Field()
   surveyId: number;
+
+  @Field()
+  isMultipleChoice: boolean;
 }
 
 @InputType()
@@ -19,4 +22,7 @@ export class UpdateQuestionInput {
   @Field()
   @IsNotEmpty({ message: '질문 내용을 입력해주세요.' })
   content: string;
+
+  @Field()
+  isMultipleChoice: boolean;
 }

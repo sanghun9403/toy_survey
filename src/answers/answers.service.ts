@@ -7,38 +7,34 @@ import {
 } from 'src/_common/dtos/answer.dto';
 import { Answer } from 'src/_common/entities/answer.entity';
 import { QuestionsService } from 'src/questions/questions.service';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 
 @Injectable()
 export class AnswersService {
   constructor(
     @InjectRepository(Answer)
     private readonly answerRepository: Repository<Answer>,
-    private readonly quetionService: QuestionsService,
+    private readonly questionService: QuestionsService,
   ) {}
 
   // 선택지 생성
-  async createAnswer(createAnswerInput: CreateAnswerInput): Promise<Answer> {
-    const { content, questionId } = createAnswerInput;
-    const question = await this.quetionService.getQuestionById(questionId);
-
-    if (!question)
-      throw new ApolloError(
-        '해당 질문지를 찾을 수 없습니다',
-        'QUESTION_NOT_FOUND',
-      );
-
+  async createAnswer(
+    entityManager: EntityManager,
+    createAnswerInput: CreateAnswerInput,
+  ): Promise<Answer> {
+    const { content, questionId, score } = createAnswerInput;
     const answer = this.answerRepository.create({
       content,
+      score,
       question: { id: questionId },
     });
 
-    return this.answerRepository.save(answer);
+    return entityManager.save(answer);
   }
 
   // 질문지ID별 선택지 조회
   async getAnswersByQuestionId(questionId: number): Promise<Answer[]> {
-    const question = await this.quetionService.getQuestionById(questionId);
+    const question = await this.questionService.getQuestionById(questionId);
 
     if (!question)
       throw new ApolloError(

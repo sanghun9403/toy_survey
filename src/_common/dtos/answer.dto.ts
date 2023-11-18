@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, Float } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 
 @InputType()
@@ -9,6 +9,9 @@ export class CreateAnswerInput {
 
   @Field()
   questionId: number;
+
+  @Field()
+  score: number;
 }
 
 @InputType()
@@ -19,4 +22,13 @@ export class UpdateAnswerInput {
   @Field()
   @IsNotEmpty({ message: '답변 내용을 입력해주세요.' })
   content: string;
+}
+
+@InputType()
+export class AnswerInput {
+  @Field()
+  content: string;
+
+  @Field(() => Float)
+  score: number;
 }
