@@ -25,7 +25,7 @@ type ResponseDetail {
 
 type Answer {
   id: Int!
-  AnswerText: String!
+  content: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   question: Question!
@@ -34,7 +34,7 @@ type Answer {
 
 type Question {
   id: Int!
-  questionText: String!
+  content: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   survey: Survey!
@@ -55,12 +55,20 @@ type Survey {
 type Query {
   getAllSurveys: [Survey!]!
   getSurveyById(surveyId: Float!): Survey!
+  getQuestionsBySurveyId(surveyId: Float!): [Question!]!
+  getAnswerByQuestionId(questionId: Float!): [Answer!]!
 }
 
 type Mutation {
   createSurvey(createSurveyInput: CreateSurveyInput!): Survey!
   updateSurvey(updateSurveyInput: UpdateSurveyInput!): Survey!
   deleteSurvey(surveyId: Float!): Boolean!
+  createQuestion(createQuestionInput: CreateQuestionInput!): Question!
+  updateQuestion(updateQuestionInput: UpdateQuestionInput!): Question!
+  deleteQuestion(questionId: Float!): Boolean!
+  createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
+  updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
+  deleteAnswer(answerId: Float!): Boolean!
 }
 
 input CreateSurveyInput {
@@ -72,4 +80,24 @@ input UpdateSurveyInput {
   id: Float!
   title: String!
   description: String!
+}
+
+input CreateQuestionInput {
+  content: String!
+  surveyId: Float!
+}
+
+input UpdateQuestionInput {
+  id: Float!
+  content: String!
+}
+
+input CreateAnswerInput {
+  content: String!
+  questionId: Float!
+}
+
+input UpdateAnswerInput {
+  id: Float!
+  content: String!
 }

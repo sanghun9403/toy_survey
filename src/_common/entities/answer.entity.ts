@@ -20,7 +20,7 @@ export class Answer {
 
   @Column()
   @Field()
-  AnswerText: string;
+  content: string;
 
   @CreateDateColumn()
   @Field(() => Date)

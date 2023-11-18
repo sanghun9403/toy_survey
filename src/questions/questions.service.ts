@@ -6,6 +6,7 @@ import {
   UpdateQuestionInput,
 } from 'src/_common/dtos/quetion.dto';
 import { Question } from 'src/_common/entities/question.entity';
+import { SurveysService } from 'src/surveys/surveys.service';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -13,6 +14,7 @@ export class QuestionsService {
   constructor(
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>,
+    private readonly surveyService: SurveysService,
   ) {}
 
   // 질문지 생성
@@ -20,8 +22,9 @@ export class QuestionsService {
     createQuestionInput: CreateQuestionInput,
   ): Promise<Question> {
     const { content, surveyId } = createQuestionInput;
+    const survey = await this.surveyService.getSurveyById(surveyId);
 
-    if (!surveyId)
+    if (!survey)
       throw new ApolloError(
         '해당 설문지를 찾을 수 없습니다',
         'SURVEY_NOT_FOUND',
@@ -37,17 +40,34 @@ export class QuestionsService {
 
   // 설문지 ID별 질문지 조회
   async getQuestionBySurveyId(surveyId: number): Promise<Question[]> {
+    const survey = await this.surveyService.getSurveyById(surveyId);
+
+    if (!survey)
+      throw new ApolloError(
+        '해당 설문지를 찾을 수 없습니다',
+        'SURVEY_NOT_FOUND',
+      );
+
     const questions = await this.questionRepository.find({
       where: { id: surveyId },
     });
 
-    if (!questions)
+    return questions;
+  }
+
+  // 질문지 ID별 조회
+  async getQuestionById(questionId: number): Promise<Question> {
+    const question = await this.questionRepository.findOne({
+      where: { id: questionId },
+    });
+
+    if (!question)
       throw new ApolloError(
         '해당 질문지를 찾을 수 없습니다',
-        'SURVEY_NOT_FOUND',
+        'QUESTION_NOT_FOUND',
       );
 
-    return questions;
+    return question;
   }
 
   // 질문지 업데이트
