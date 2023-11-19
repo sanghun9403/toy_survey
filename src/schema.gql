@@ -21,7 +21,7 @@ type ResponseDetail {
   totalScore: Int!
   response: Response!
   question: Question!
-  answer: Answer!
+  answers: Answer!
 }
 
 type Answer {
@@ -32,7 +32,7 @@ type Answer {
   updatedAt: DateTime!
   question: Question!
   response: Response!
-  responseDetails: [ResponseDetail!]!
+  responseDetail: [ResponseDetail!]!
 }
 
 type Question {
@@ -63,6 +63,7 @@ type Query {
   getAnswerByQuestionId(questionId: Float!): [Answer!]!
   getResponsesBySurveyId(surveyId: Float!): [Response!]!
   getResponseById(responseId: Float!): Response!
+  getDetailByResponseId(responseId: Float!): ResponseDetail!
 }
 
 type Mutation {
@@ -124,6 +125,7 @@ input CreateAnswerInput {
 input UpdateAnswerInput {
   id: Float!
   content: String!
+  score: Float!
 }
 
 input CreateResponseInput {

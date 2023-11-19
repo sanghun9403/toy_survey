@@ -22,6 +22,9 @@ export class UpdateAnswerInput {
   @Field()
   @IsNotEmpty({ message: '답변 내용을 입력해주세요.' })
   content: string;
+
+  @Field()
+  score: number;
 }
 
 @InputType()

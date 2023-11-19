@@ -46,7 +46,7 @@ export class Answer {
   @Field(() => Response)
   response: Response;
 
-  @OneToMany(() => ResponseDetail, (responseDetail) => responseDetail.answer)
+  @OneToMany(() => ResponseDetail, (responseDetail) => responseDetail.answers)
   @Field(() => [ResponseDetail])
-  responseDetails: ResponseDetail[];
+  responseDetail: ResponseDetail;
 }

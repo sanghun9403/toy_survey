@@ -68,7 +68,7 @@ export class AnswersService {
   // 선택지 업데이트
   async updateAnswer(updateAnswerInput: UpdateAnswerInput): Promise<Answer> {
     try {
-      const { content, id } = updateAnswerInput;
+      const { content, score, id } = updateAnswerInput;
 
       const answer = await this.answerRepository.findOne({
         where: { id },
@@ -83,6 +83,7 @@ export class AnswersService {
       }
 
       answer.content = content || answer.content;
+      answer.score = score || answer.score;
 
       return this.answerRepository.save(answer);
     } catch (err) {
