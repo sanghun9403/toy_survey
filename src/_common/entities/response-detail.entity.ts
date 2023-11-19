@@ -26,7 +26,7 @@ export class ResponseDetail {
   @Field(() => Question)
   question: Question;
 
-  @ManyToOne(() => Answer, (answer) => answer.responseDetails)
+  @ManyToOne(() => Answer, (answers) => answers.responseDetail)
   @Field(() => Answer)
-  answer: Answer;
+  answers: Answer[];
 }

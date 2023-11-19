@@ -7,6 +7,7 @@ import {
 } from 'src/_common/dtos/response.dto';
 import { Response } from 'src/_common/entities/response.entity';
 import { AnswersService } from 'src/answers/answers.service';
+import { ResponseDetailsService } from 'src/response-details/response-details.service';
 import { SurveysService } from 'src/surveys/surveys.service';
 import { Repository } from 'typeorm';
 
@@ -17,24 +18,40 @@ export class ResponsesService {
     private readonly responseRepository: Repository<Response>,
     private readonly surveyService: SurveysService,
     private readonly answerService: AnswersService,
+    private readonly responseDetailService: ResponseDetailsService,
   ) {}
 
   // 응답 생성
   async createResponse(input: CreateResponseInput): Promise<Response> {
     const { surveyId, answerIds } = input;
 
-    const survey = await this.surveyService.getSurveyById(surveyId);
+    return this.responseRepository.manager.transaction(
+      async (transactionalEntityManager) => {
+        try {
+          const survey = await this.surveyService.getSurveyById(surveyId);
 
-    const response = new Response();
-    response.survey = survey;
-    response.answers = [];
+          const response = new Response();
+          response.survey = survey;
+          response.answers = [];
 
-    for (const answerId of answerIds) {
-      const answer = await this.answerService.getAnswerById(answerId);
-      response.answers.push(answer);
-    }
+          for (const answerId of answerIds) {
+            const answer = await this.answerService.getAnswerById(answerId);
+            response.answers.push(answer);
+          }
 
-    return this.responseRepository.save(response);
+          const savedResponse = await transactionalEntityManager.save(
+            Response,
+            response,
+          );
+
+          await this.responseDetailService.createResponseDetail(savedResponse);
+
+          return savedResponse;
+        } catch (err) {
+          throw new ApolloError(err.message, 'RESPONSE_CREATE_ERROR');
+        }
+      },
+    );
   }
 
   // 설문지ID별 응답 조회
