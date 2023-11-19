@@ -9,7 +9,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Question } from './question.entity';
-import { ResponseDetail } from './response-detail.entity';
 import { Response } from './response.entity';
 
 @Entity('answers')
@@ -45,8 +44,4 @@ export class Answer {
   @ManyToOne(() => Response, (response) => response.answers)
   @Field(() => Response)
   response: Response;
-
-  @OneToMany(() => ResponseDetail, (responseDetail) => responseDetail.answers)
-  @Field(() => [ResponseDetail])
-  responseDetail: ResponseDetail;
 }

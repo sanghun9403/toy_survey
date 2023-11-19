@@ -5,7 +5,6 @@ import { SurveysModule } from './surveys/surveys.module';
 import { QuestionsModule } from './questions/questions.module';
 import { AnswersModule } from './answers/answers.module';
 import { ResponsesModule } from './responses/responses.module';
-import { ResponseDetailsModule } from './response-details/response-details.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -24,7 +23,6 @@ import { ormConfig } from './_common/config/orm.config';
     QuestionsModule,
     AnswersModule,
     ResponsesModule,
-    ResponseDetailsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
