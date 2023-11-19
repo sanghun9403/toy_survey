@@ -4,10 +4,10 @@
 
 type Response {
   id: Int!
+  totalScore: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   survey: Survey!
-  responseDetails: [ResponseDetail!]!
   answers: [Answer!]!
 }
 
@@ -15,14 +15,6 @@ type Response {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
-
-type ResponseDetail {
-  id: Int!
-  totalScore: Int!
-  response: Response!
-  question: Question!
-  answers: Answer!
-}
 
 type Answer {
   id: Int!
@@ -32,7 +24,6 @@ type Answer {
   updatedAt: DateTime!
   question: Question!
   response: Response!
-  responseDetail: [ResponseDetail!]!
 }
 
 type Question {
@@ -43,7 +34,6 @@ type Question {
   updatedAt: DateTime!
   survey: Survey!
   answers: [Answer!]!
-  responseDetails: [ResponseDetail!]!
 }
 
 type Survey {
@@ -63,7 +53,6 @@ type Query {
   getAnswerByQuestionId(questionId: Float!): [Answer!]!
   getResponsesBySurveyId(surveyId: Float!): [Response!]!
   getResponseById(responseId: Float!): Response!
-  getDetailByResponseId(responseId: Float!): ResponseDetail!
 }
 
 type Mutation {

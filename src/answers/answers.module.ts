@@ -4,7 +4,6 @@ import { AnswersService } from './answers.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Answer } from 'src/_common/entities/answer.entity';
 import { Question } from 'src/_common/entities/question.entity';
-import { ResponseDetail } from 'src/_common/entities/response-detail.entity';
 import { QuestionsService } from 'src/questions/questions.service';
 
 @Module({

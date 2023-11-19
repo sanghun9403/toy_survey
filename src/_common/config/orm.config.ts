@@ -4,12 +4,11 @@ import { Survey } from '../entities/survey.entity';
 import { Question } from '../entities/question.entity';
 import { Answer } from '../entities/answer.entity';
 import { Response } from '../entities/response.entity';
-import { ResponseDetail } from '../entities/response-detail.entity';
 
 function ormConfig(): TypeOrmModuleOptions {
   const commonConf = {
     SYNCRONIZE: true,
-    ENTITIES: [Survey, Question, Answer, Response, ResponseDetail],
+    ENTITIES: [Survey, Question, Answer, Response],
   };
 
   const ormconfig: TypeOrmModuleOptions = {

@@ -4,7 +4,6 @@ import { SurveysService } from './surveys.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Survey } from 'src/_common/entities/survey.entity';
 import { Question } from 'src/_common/entities/question.entity';
-import { Response } from 'src/_common/entities/response.entity';
 import { Answer } from 'src/_common/entities/answer.entity';
 import { QuestionsService } from 'src/questions/questions.service';
 import { AnswersService } from 'src/answers/answers.service';

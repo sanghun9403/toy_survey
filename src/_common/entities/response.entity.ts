@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import {
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
@@ -8,7 +9,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Survey } from './survey.entity';
-import { ResponseDetail } from './response-detail.entity';
 import { Answer } from './answer.entity';
 
 @Entity('responses')
@@ -17,6 +17,10 @@ export class Response {
   @PrimaryGeneratedColumn()
   @Field(() => Int)
   id: number;
+
+  @Column()
+  @Field(() => Int)
+  totalScore: number;
 
   @CreateDateColumn()
   @Field(() => Date)
@@ -32,16 +36,6 @@ export class Response {
   })
   @Field(() => Survey, { nullable: false })
   survey: Survey;
-
-  @OneToMany(
-    () => ResponseDetail,
-    (responseDetails) => responseDetails.response,
-    {
-      cascade: true,
-    },
-  )
-  @Field(() => [ResponseDetail])
-  responseDetails: ResponseDetail[];
 
   @OneToMany(() => Answer, (answers) => answers.response)
   @Field(() => [Answer])

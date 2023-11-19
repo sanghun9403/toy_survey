@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 import { Survey } from './survey.entity';
 import { Answer } from './answer.entity';
-import { ResponseDetail } from './response-detail.entity';
 
 @Entity('questions')
 @ObjectType()
@@ -47,8 +46,4 @@ export class Question {
   })
   @Field(() => [Answer])
   answers: Answer[];
-
-  @OneToMany(() => ResponseDetail, (responseDetail) => responseDetail.question)
-  @Field(() => [ResponseDetail])
-  responseDetails: ResponseDetail[];
 }
