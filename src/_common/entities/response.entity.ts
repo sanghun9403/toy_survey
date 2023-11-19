@@ -9,8 +9,9 @@ import {
 } from 'typeorm';
 import { Survey } from './survey.entity';
 import { ResponseDetail } from './response-detail.entity';
+import { Answer } from './answer.entity';
 
-@Entity('response')
+@Entity('responses')
 @ObjectType()
 export class Response {
   @PrimaryGeneratedColumn()
@@ -34,11 +35,15 @@ export class Response {
 
   @OneToMany(
     () => ResponseDetail,
-    (responseDetail) => responseDetail.response,
+    (responseDetails) => responseDetails.response,
     {
       cascade: true,
     },
   )
   @Field(() => [ResponseDetail])
   responseDetails: ResponseDetail[];
+
+  @OneToMany(() => Answer, (answers) => answers.response)
+  @Field(() => [Answer])
+  answers: Answer[];
 }

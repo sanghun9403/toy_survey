@@ -4,7 +4,7 @@ import { Response } from './response.entity';
 import { Question } from './question.entity';
 import { Answer } from './answer.entity';
 
-@Entity('responseDetail')
+@Entity('responseDetails')
 @ObjectType()
 export class ResponseDetail {
   @PrimaryGeneratedColumn()
