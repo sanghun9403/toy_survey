@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Question } from './question.entity';
 import { ResponseDetail } from './response-detail.entity';
+import { Response } from './response.entity';
 
 @Entity('answers')
 @ObjectType()
@@ -40,6 +41,10 @@ export class Answer {
   })
   @Field(() => Question, { nullable: false })
   question: Question;
+
+  @ManyToOne(() => Response, (response) => response.answers)
+  @Field(() => Response)
+  response: Response;
 
   @OneToMany(() => ResponseDetail, (responseDetail) => responseDetail.answer)
   @Field(() => [ResponseDetail])

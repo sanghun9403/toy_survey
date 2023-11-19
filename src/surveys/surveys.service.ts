@@ -79,6 +79,7 @@ export class SurveysService {
   async getSurveyById(surveyId: number): Promise<Survey> {
     const survey = await this.surveyRepository.findOne({
       where: { id: surveyId },
+      relations: ['questions', 'questions.answers'],
     });
 
     if (!survey)

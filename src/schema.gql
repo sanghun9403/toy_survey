@@ -8,6 +8,7 @@ type Response {
   updatedAt: DateTime!
   survey: Survey!
   responseDetails: [ResponseDetail!]!
+  answers: [Answer!]!
 }
 
 """
@@ -30,6 +31,7 @@ type Answer {
   createdAt: DateTime!
   updatedAt: DateTime!
   question: Question!
+  response: Response!
   responseDetails: [ResponseDetail!]!
 }
 
@@ -59,6 +61,8 @@ type Query {
   getSurveyById(surveyId: Float!): Survey!
   getQuestionsBySurveyId(surveyId: Float!): [Question!]!
   getAnswerByQuestionId(questionId: Float!): [Answer!]!
+  getResponsesBySurveyId(surveyId: Float!): [Response!]!
+  getResponseById(responseId: Float!): Response!
 }
 
 type Mutation {
@@ -71,6 +75,9 @@ type Mutation {
   createAnswer(createAnswerInput: CreateAnswerInput!): Answer!
   updateAnswer(updateAnswerInput: UpdateAnswerInput!): Answer!
   deleteAnswer(answerId: Float!): Boolean!
+  createResponse(input: CreateResponseInput!): Response!
+  updateResponse(input: UpdateResponseInput!): Response!
+  deleteResponse(responseId: Float!): Boolean!
 }
 
 input CreateSurveyWith {
@@ -117,4 +124,14 @@ input CreateAnswerInput {
 input UpdateAnswerInput {
   id: Float!
   content: String!
+}
+
+input CreateResponseInput {
+  surveyId: Int!
+  answerIds: [Int!]!
+}
+
+input UpdateResponseInput {
+  id: Float!
+  answerIds: [Int!]!
 }

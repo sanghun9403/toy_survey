@@ -50,6 +50,21 @@ export class AnswersService {
     return answers;
   }
 
+  // 선택지ID별 조회
+  async getAnswerById(answerId: number): Promise<Answer> {
+    const answer = await this.answerRepository.findOne({
+      where: { id: answerId },
+    });
+
+    if (!answer)
+      throw new ApolloError(
+        '해당 선택지를 찾을 수 없습니다.',
+        'ANSWER_NOT_FOUND',
+      );
+
+    return answer;
+  }
+
   // 선택지 업데이트
   async updateAnswer(updateAnswerInput: UpdateAnswerInput): Promise<Answer> {
     try {
