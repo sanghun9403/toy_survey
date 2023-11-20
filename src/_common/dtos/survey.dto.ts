@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, Int } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 import { AnswerInput } from './answer.dto';
 
@@ -15,7 +15,7 @@ export class CreateSurveyInput {
 
 @InputType()
 export class UpdateSurveyInput {
-  @Field()
+  @Field(() => Int)
   id: number;
 
   @Field()

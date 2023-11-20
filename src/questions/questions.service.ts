@@ -71,7 +71,7 @@ export class QuestionsService {
     updateQuestionInput: UpdateQuestionInput,
   ): Promise<Question> {
     try {
-      const { content, id } = updateQuestionInput;
+      const { content, id, isMultipleChoice } = updateQuestionInput;
 
       const question = await this.questionRepository.findOne({ where: { id } });
 
@@ -82,6 +82,7 @@ export class QuestionsService {
         );
 
       question.content = content || question.content;
+      question.isMultipleChoice = isMultipleChoice || question.isMultipleChoice;
 
       return await this.questionRepository.save(question);
     } catch (err) {
@@ -93,12 +94,6 @@ export class QuestionsService {
   async deleteQuestion(questionId: number): Promise<boolean> {
     try {
       const result = await this.questionRepository.delete(questionId);
-
-      if (!result)
-        throw new ApolloError(
-          '해당 질문지를 찾을 수 없습니다',
-          'QUESTION_NOT_FOUND',
-        );
 
       return result.affected > 0;
     } catch (err) {

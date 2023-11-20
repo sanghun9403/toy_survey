@@ -118,12 +118,6 @@ export class SurveysService {
     try {
       const result = await this.surveyRepository.delete(surveyId);
 
-      if (!result)
-        throw new ApolloError(
-          '해당 설문지를 찾을 수 없습니다.',
-          'SURVEY_NOT_FOUND',
-        );
-
       return result.affected > 0;
     } catch (err) {
       throw new ApolloError(err.message, 'SURVEY_DELETE_ERROR');

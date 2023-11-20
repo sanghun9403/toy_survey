@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, Int } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 
 @InputType()
@@ -7,22 +7,22 @@ export class CreateQuestionInput {
   @IsNotEmpty({ message: '질문 내용을 입력해주세요.' })
   content: string;
 
-  @Field()
+  @Field(() => Int)
   surveyId: number;
 
-  @Field()
+  @Field(() => Boolean)
   isMultipleChoice: boolean;
 }
 
 @InputType()
 export class UpdateQuestionInput {
-  @Field()
+  @Field(() => Int)
   id: number;
 
   @Field()
   @IsNotEmpty({ message: '질문 내용을 입력해주세요.' })
   content: string;
 
-  @Field()
+  @Field(() => Boolean)
   isMultipleChoice: boolean;
 }

@@ -102,6 +102,7 @@ export class ResponsesService {
   async deleteResponse(responseId: number): Promise<boolean> {
     try {
       const result = await this.responseRepository.delete(responseId);
+
       return result.affected > 0;
     } catch (err) {
       throw new ApolloError(err.message, 'RESPONSE_DELETE_ERROR');
