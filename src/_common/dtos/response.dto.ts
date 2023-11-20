@@ -11,7 +11,7 @@ export class CreateResponseInput {
 
 @InputType()
 export class UpdateResponseInput {
-  @Field()
+  @Field(() => Int)
   id: number;
 
   @Field(() => [Int])

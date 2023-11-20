@@ -84,37 +84,37 @@ input CreateSurveyInput {
 
 input AnswerInput {
   content: String!
-  score: Float!
+  score: Int!
 }
 
 input UpdateSurveyInput {
-  id: Float!
+  id: Int!
   title: String!
   description: String!
 }
 
 input CreateQuestionInput {
   content: String!
-  surveyId: Float!
+  surveyId: Int!
   isMultipleChoice: Boolean!
 }
 
 input UpdateQuestionInput {
-  id: Float!
+  id: Int!
   content: String!
   isMultipleChoice: Boolean!
 }
 
 input CreateAnswerInput {
   content: String!
-  questionId: Float!
-  score: Float!
+  questionId: Int!
+  score: Int!
 }
 
 input UpdateAnswerInput {
-  id: Float!
+  id: Int!
   content: String!
-  score: Float!
+  score: Int!
 }
 
 input CreateResponseInput {
@@ -123,6 +123,6 @@ input CreateResponseInput {
 }
 
 input UpdateResponseInput {
-  id: Float!
+  id: Int!
   answerIds: [Int!]!
 }
