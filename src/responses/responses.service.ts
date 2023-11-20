@@ -37,7 +37,8 @@ export class ResponsesService {
       response.totalScore += answer.score;
     }
 
-    return this.responseRepository.save(response);
+    await this.responseRepository.save(response);
+    return response;
   }
 
   // 설문지ID별 응답 조회
