@@ -18,7 +18,7 @@ function ormConfig(): TypeOrmModuleOptions {
     port: Number(process.env.PG_PORT),
     username: process.env.PG_USERNAME,
     password: process.env.PG_PASSWORD,
-    logging: true,
+    // logging: true,
     synchronize: commonConf.SYNCRONIZE,
     entities: commonConf.ENTITIES,
     namingStrategy: new SnakeNamingStrategy(),

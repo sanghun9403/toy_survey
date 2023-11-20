@@ -45,6 +45,7 @@ export class ResponsesService {
     const response = await this.responseRepository.find({
       where: { survey: { id: surveyId } },
       relations: ['survey', 'answers'],
+      order: { createdAt: 'DESC' },
     });
 
     if (!response)

@@ -1,73 +1,350 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Survey
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+- 객관식 설문지의 데이터베이스 설계
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+### 사용기술
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- TypeScript, NestJs
+- PostgreSQL
+- graphQL
+- TypeORM
 
-## Installation
+---
+
+### Install Dependencies
 
 ```bash
-$ npm install
+npm install
 ```
 
-## Running the app
+### Use it
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run start:dev
 ```
 
-## Test
+---
 
-```bash
-# unit tests
-$ npm run test
+### DB Connect
 
-# e2e tests
-$ npm run test:e2e
+- Localhost 환경에서 PostgreSQL DB를 연결하여 사용
+- orm.config 파일에서 환경변수 처리를 해두었으므로 .env 파일을 생성하여 아래의 '' 부분에 정보 입력 필요
 
-# test coverage
-$ npm run test:cov
+```
+PG_DATABASE=''
+PG_HOST=''
+PG_PORT=5432
+PG_USERNAME=postgres
+PG_PASSWORD=''
 ```
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 주요 기능
 
-## Stay in touch
+<details><summary>설문지 생성 </summary>
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Query 예시
+- isMultipleChoice 필드를 사용하여 다중선택 여부를 구분
+- 답변지 별 중요도에 따라 점수 부여 가능
 
-## License
+```graphql
+mutation {
+  createSurvey(
+    input: {
+      createSurveyInput: {
+        title: "샘플 설문지"
+        description: "이 설문지는 샘플용 설문지입니다."
+      }
+      questionContents: [
+        "당신이 좋아하는 색깔은 무엇인가요?"
+        "일주일에 몇 번 운동하시나요?"
+        "당신의 성별은 무엇입니까?"
+      ]
+      answerContents: [
+        [
+          { content: "빨강", score: 2 }
+          { content: "파랑", score: 4 }
+          { content: "초록", score: 6 }
+        ]
+        [
+          { content: "0번", score: 1 }
+          { content: "1번", score: 2 }
+          { content: "3번 이상", score: 3 }
+        ]
+        [{ content: "남자", score: 1 }, { content: "여자", score: 2 }]
+      ]
+      isMultipleChoice: true
+    }
+  ) {
+    id
+    title
+    description
+    questions {
+      id
+      content
+      isMultipleChoice
+      answers {
+        id
+        content
+        score
+      }
+    }
+  }
+}
+```
 
-Nest is [MIT licensed](LICENSE).
+- 응답결과
+
+```
+{
+  "data": {
+    "createSurvey": {
+      "id": 4,
+      "title": "샘플 설문지5",
+      "description": "이 설문지는 샘플용 설문지입니다.5",
+      "questions": [
+        {
+          "id": 10,
+          "content": "당신이 좋아하는 색깔은 무엇인가요?",
+          "isMultipleChoice": true,
+          "answers": [
+            {
+              "id": 25,
+              "content": "빨강",
+              "score": 2
+            },
+            {
+              "id": 26,
+              "content": "파랑",
+              "score": 4
+            },
+            {
+              "id": 27,
+              "content": "초록",
+              "score": 6
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "content": "일주일에 몇 번 운동하시나요?",
+          "isMultipleChoice": true,
+          "answers": [
+            {
+              "id": 28,
+              "content": "0번",
+              "score": 1
+            },
+            {
+              "id": 29,
+              "content": "1번",
+              "score": 2
+            },
+            {
+              "id": 30,
+              "content": "3번 이상",
+              "score": 3
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "content": "당신의 성별은 무엇입니까?",
+          "isMultipleChoice": true,
+          "answers": [
+            {
+              "id": 31,
+              "content": "남자",
+              "score": 1
+            },
+            {
+              "id": 32,
+              "content": "여자",
+              "score": 2
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details><summary>응답지 제출</summary>
+
+- Query 예시
+
+```graphql
+mutation {
+  createResponse(input: { surveyId: 3, answerIds: [2, 4, 6] }) {
+    id
+    survey {
+      id
+      title
+    }
+    answers {
+      id
+      content
+      score
+    }
+  }
+}
+```
+
+- 응답 결과
+
+```graphql
+{
+  "data": {
+    "createResponse": {
+      "id": 3,
+      "survey": {
+        "id": 3,
+        "title": "샘플 설문지4"
+      },
+      "answers": [
+        {
+          "id": 2,
+          "content": "파랑",
+          "score": 4
+        },
+        {
+          "id": 4,
+          "content": "0번",
+          "score": 1
+        },
+        {
+          "id": 6,
+          "content": "3번 이상",
+          "score": 3
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details><summary>제출 결과 확인</summary>
+
+- 설문지 ID별 응답지 조회
+- Query예시
+
+```graphql
+query {
+  getResponsesBySurveyId(surveyId: 7) {
+    id
+    totalScore
+    answers {
+      id
+      content
+      score
+    }
+  }
+}
+```
+
+- 응답 결과
+
+```graphql
+{
+  "data": {
+    "getResponsesBySurveyId": [
+      {
+        "id": 23,
+        "totalScore": 9,
+        "answers": [
+          {
+            "id": 1,
+            "content": "빨강",
+            "score": 2
+          },
+          {
+            "id": 3,
+            "content": "초록",
+            "score": 6
+          },
+          {
+            "id": 7,
+            "content": "남자",
+            "score": 1
+          }
+        ]
+      },
+      {
+        "id": 22,
+        "totalScore": 7,
+        "answers": [
+          {
+            "id": 2,
+            "content": "파랑",
+            "score": 4
+          },
+          {
+            "id": 4,
+            "content": "0번",
+            "score": 1
+          },
+          {
+            "id": 8,
+            "content": "여자",
+            "score": 2
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+- 응답지ID별 조회
+
+```graphql
+query {
+  getResponseById(responseId: 22) {
+    id
+    totalScore
+    answers {
+      id
+      content
+      score
+    }
+  }
+}
+```
+
+- 응답 결과
+
+```graphql
+{
+  "data": {
+    "getResponseById": {
+      "id": 22,
+      "totalScore": 7,
+      "answers": [
+        {
+          "id": 2,
+          "content": "파랑",
+          "score": 4
+        },
+        {
+          "id": 4,
+          "content": "0번",
+          "score": 1
+        },
+        {
+          "id": 8,
+          "content": "여자",
+          "score": 2
+        }
+      ]
+    }
+  }
+}
+```
